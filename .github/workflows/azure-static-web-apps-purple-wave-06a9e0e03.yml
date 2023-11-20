@@ -21,10 +21,18 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         # cache: 'npm'
 
-    - name: npm install, build, and test
+    - name: npm install
+      run: npm install
+
+    - name: get batches
+      run: node get-batch.js
+
+    - name: run tests
       run: |
-        npm install
-        npm run test-pages
+        batches=$(cat ./_data/batches.json)
+        for batch in $batches; do
+          npm run test-pages -- --batch "$batch"
+        done
 
   deploy:
     if: github.event_name == 'push'
