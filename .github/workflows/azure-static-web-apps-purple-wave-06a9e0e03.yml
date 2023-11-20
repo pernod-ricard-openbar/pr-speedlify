@@ -15,17 +15,17 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        # cache: 'npm'
+    # - name: Set up Node.js
+    #   uses: actions/setup-node@v3
+    #   with:
+    #     node-version: ${{ env.NODE_VERSION }}
+    #     # cache: 'npm'
 
-    - name: npm install
-      run: |
-        npm install
-        npm run build
-        npm run test-pages
+    # - name: npm install
+    #   run: |
+    #     npm install
+    #     npm run build
+    #     npm run test-pages
 
     - name: Deploy to Azure
       id: deploy
@@ -34,6 +34,6 @@ jobs:
         azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PURPLE_WAVE_06A9E0E03 }}
         repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
         action: "upload"
-        app_location: "/_site" # App source code path
-        skip_app_build: true
-        output_location: "" # Built app content directory - optional
+        app_location: "/" # App source code path
+        skip_app_build: false
+        output_location: "/_site" # Built app content directory - optional
