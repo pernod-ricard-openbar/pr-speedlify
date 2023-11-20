@@ -3,7 +3,7 @@ module.exports = {
 	description: "The default sites that get tested",
 	options: {
 		runs: 1,
-		frequency: 1, // (in minutes)
+		frequency: 60, // (in minutes)
 	},
 	urls: [
         "https://www.51.fr",
