@@ -1,5 +1,5 @@
 module.exports = {
-	name: "Sample", // optional, falls back to object key
+	name: "PR Sites", // optional, falls back to object key
 	description: "The default sites that get tested",
 	options: {
 		runs: 1,
