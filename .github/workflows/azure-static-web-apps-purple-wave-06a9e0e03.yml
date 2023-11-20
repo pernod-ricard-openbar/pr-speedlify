@@ -21,8 +21,9 @@ jobs:
         node-version: ${{ env.NODE_VERSION }}
         # cache: 'npm'
 
-    - name: npm build for production
+    - name: npm install and build for production
       run: |
+        npm install
         npm run build-production
 
     - name: Deploy to Azure
