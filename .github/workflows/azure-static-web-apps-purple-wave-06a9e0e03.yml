@@ -1,6 +1,10 @@
 name: Azure Static Web Apps CI/CD
 
 on:
+  # Triggers the workflow on cron event
+  schedule:
+    # Trigger the workflow at 00:00 UTC every day
+    - cron: '0 0 * * *'
   push:
     branches:
       - main
