@@ -6,8 +6,6 @@ const PerfLeaderboard = require("performance-leaderboard");
 
 const NUMBER_OF_RUNS = 3;
 const FREQUENCY = 60; // in minutes
-const NETLIFY_MAX_LIMIT = 15; // in minutes, netlify limit
-const ESTIMATED_MAX_TIME_PER_TEST = 0.75; // in minutes, estimate based on looking at past builds
 
 const prettyTime = (seconds) => {
 	// Based on https://johnresig.com/blog/javascript-pretty-date/
@@ -23,18 +21,6 @@ const prettyTime = (seconds) => {
 		(days < 7 && days + " days ago") ||
 		(Math.ceil(days / 7) + " weeks ago")
 	);
-}
-
-async function tryToPreventNetlifyBuildTimeout(dateTestsStarted, numberOfUrls, estimatedTimePerBuild = ESTIMATED_MAX_TIME_PER_TEST) {
-	let minutesRemaining = NETLIFY_MAX_LIMIT - (Date.now() - dateTestsStarted)/(1000*60);
-	if(process.env.CONTEXT &&
-		process.env.CONTEXT === "production" &&
-		NETLIFY_MAX_LIMIT &&
-		minutesRemaining < numberOfUrls * estimatedTimePerBuild) {
-		console.log( `run-tests has about ${minutesRemaining} minutes left, but the next run has ${numberOfUrls} urls. Saving it for the next build.` );
-		return true;
-	}
-	return false;
 }
 
 (async function() {
@@ -72,12 +58,6 @@ async function tryToPreventNetlifyBuildTimeout(dateTestsStarted, numberOfUrls, e
 		if(group.skip) {
 			console.log( `Skipping ${key} (you told me to in your site config)` );
 			continue;
-		}
-
-		// TODO maybe skip this step if it’s the first build?
-		if(await tryToPreventNetlifyBuildTimeout(dateTestsStarted, group.urls.length, group.estimatedTimePerBuild)) {
-			// stop everything, we’re too close to the timeout
-			return;
 		}
 
 		let runFrequency =
