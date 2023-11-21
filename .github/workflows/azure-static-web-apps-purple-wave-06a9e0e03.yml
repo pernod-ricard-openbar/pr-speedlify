@@ -5,17 +5,16 @@ on:
   schedule:
     # Trigger the workflow at 00:00 UTC every day
     - cron: '0 0 * * *'
-  push:
-    branches:
-      - main
-
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+  
 env:
   NODE_VERSION: '20.9.0'
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Build
+    name: Build, Test & Deploy
     steps:
     - uses: actions/checkout@v3
 
