@@ -74,7 +74,6 @@ const prettyTime = (seconds) => {
 				continue;
 			} else {
 				console.log(`Previous test for ${key} ran ${lastRunSecondsAgoPretty}, more than ${runFrequency} minutes, running.`);
-
 			}
 		}
 
@@ -84,11 +83,17 @@ const prettyTime = (seconds) => {
 			chromeFlags: ['--headless', '--disable-dev-shm-usage']
 		}, group.options);
 
-		let results = await PerfLeaderboard(
-			group.urls,
-			runCount,
-			options,
-		);
+		let results;
+		try {
+			results = await PerfLeaderboard(
+				group.urls,
+				runCount,
+				options,
+			);
+		} catch (error) {
+			console.error(`Error while running PerfLeaderboard for ${key}:`, error.message);
+			continue;
+		}
 
 		let promises = [];
 		for(let result of results) {
